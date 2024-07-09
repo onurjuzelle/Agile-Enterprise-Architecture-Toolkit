@@ -4,14 +4,11 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 
-# Load the Excel file
 file_path = '/Users/onurguzel/Downloads/Agile Enterprise Architecture Maturity Model Validation Survey (Responses).xlsx'
 df = pd.read_excel(file_path)
 
-# Clean the column names by stripping leading/trailing spaces
 df.columns = df.columns.str.strip()
 
-# Map Likert scale responses to numerical values
 likert_scale = {
     'Strongly Disagree': 1,
     'Disagree': 2,
@@ -20,10 +17,8 @@ likert_scale = {
     'Strongly Agree': 5
 }
 
-# Apply the mapping to the dataframe
 df_numerical = df.replace(likert_scale)
 
-# Define the categories and their respective questions
 categories = {
     "Accuracy": [
         "[The maturity model can accurately reflect the organizations current state of Agile Enterprise Architecture]",
@@ -54,16 +49,12 @@ categories = {
     ]
 }
 
-# Remove the leading/trailing spaces from the category questions
 categories = {cat: [q.strip() for q in questions] for cat, questions in categories.items()}
 
-# Calculate the average scores for each category
 average_scores = {category: df_numerical[questions].mean(axis=1).mean() for category, questions in categories.items()}
 
-# Convert the dictionary to a DataFrame for plotting
 average_scores_df = pd.DataFrame(list(average_scores.items()), columns=['Category', 'Average Score'])
 
-# Plot the bar chart using Plotly
 fig = px.bar(
     average_scores_df, 
     x='Category', 
